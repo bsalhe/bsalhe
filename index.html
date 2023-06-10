@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Movie Search</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+      }
+      h1 {
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 20px;
+      }
+      form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      label {
+        font-size: 1.2em;
+        margin-right: 10px;
+      }
+      input[type="text"] {
+        font-size: 1.2em;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+      }
+      button[type="submit"] {
+        font-size: 1.2em;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        background-color: #007bff;
+        color: #fff;
+        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+      button[type="submit"]:hover {
+        background-color: #0062cc;
+      }
+      #results {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      .movie {
+        width: auto;
+        margin: auto;
+        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border-radius: 5px;
+        background-color: #fff;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .movie:hover {
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+        transform: translateY(-5px);
+      }
+      .movie img {
+        width: 100%;
+        height: auto;
+        /* object-fit: cover; */
+        transition: all 0.2s ease-in-out;
+          /* border: 5px solid #f30303; */
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      .movie:hover img {
+        opacity: 0.8;
+      }
+      .movie h2 {
+        font-size: 1.2em;
+        margin: 10px;
+      }
+      .movie a {
+        text-decoration: none;
+        color: inherit;
+      }
+      .movie-box {
+      width: 20%;
+      margin: 10px;
+      border: 1px solid black;
+      padding: 10px;
+    }
+    
+    .movie-title {
+      font-size: 18px;
+    }
+    
+    .movie-poster {
+      width: 100%;
+    }
+    #play-button  {
+        display: block;
+        width: 400px;
+        height: 50px;
+        background-color: #2aa203;
+        color: #fff;
+        border: none;
+        /* border-radius: 50%; */
+        font-size: 30px;
+        text-align: center;
+        line-height: 50px;
+        text-decoration: none;
+        margin-top: 10px;
+    }
+    </style>
+  
+  </head>
+  <body>
+    <h1>Movie Search</h1>
+    <form id="search-form">
+      <label for="search-field">Search for a movie:</label>
+      <input type="text" id="search-field" name="search-field">
+      <button type="submit">Search</button>
+    </form>
+    <div id="results"></div>
+    <script>
+      const API_KEY = "a074435ad948b2e6542c2bfc4cdab1d3"; // Replace with your own API key
+      
+      const searchForm = document.getElementById("search-form");
+      const searchField = document.getElementById("search-field");
+      const resultsDiv = document.getElementById("results");
+      
+      searchForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const searchTerm = searchField.value;
+        const apiUrl = `https://api.themoviedb.org/3/search/movie?query=${searchTerm}&api_key=${API_KEY}`;
+        fetch(apiUrl)
+          .then(response => response.json())
+          .then(data => {
+            resultsDiv.innerHTML = "";
+            data.results.forEach(movie => {
+              const movieDiv = document.createElement("div");
+              movieDiv.classList.add("movie");
+              const movieTitle = document.createElement("h2");
+              const movieLink = document.createElement("a");
+              movieLink.href = `https://www.themoviedb.org/movie/${movie.id}`;
+              movieLink.target = "_blank";
+              movieLink.rel = "noopener noreferrer";
+              movieLink.textContent = movie.title;
+              movieTitle.appendChild(movieLink);
+              const moviePoster = document.createElement("img");
+              const posterLink = document.createElement("a");
+              posterLink.href = `moviedetails.html?id=${movie.id}&poster=${movie.poster_path}`;
+              posterLink.target = "_blank";
+              posterLink.rel = "noopener noreferrer";
+              moviePoster.src = `https://image.tmdb.org/t/p/w185/${movie.poster_path}`;
+              posterLink.appendChild(moviePoster);
+              movieDiv.appendChild(movieTitle);
+              movieDiv.appendChild(posterLink);
+              resultsDiv.appendChild(movieDiv);
+            const PlayH1 = document.createElement("h2");
+            //   PlayH1.id="play-button-heading";
+              const PlayButton = document.createElement("a");
+                PlayButton.id="play-button";
+                PlayButton.href=`moviedetails.html?id=${movie.id}&poster=${movie.poster_path}`;
+                PlayButton.text="PLAY ▶▶▶"     
+                PlayH1.appendChild(PlayButton);
+                movieDiv.appendChild(PlayH1);
+            });
+          })
+          .catch(error => console.error(error));
+      });
+    </script>
+  </body>
+</html>

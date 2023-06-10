@@ -1,0 +1,13 @@
+ log('Creating WANPPPConnection (if necessary)');
+    declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.*", null, {path: 1});
+
+    log('Setting up WANPPPConnection');
+    declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.*.*", {path: now}); //Refresh the node...
+
+    declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.*.Name", {value: now}, {value: "Internet"});
+    declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.*.ConnectionType", {value: now}, {value: "IP_Routed"});
+    declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.*.X_BROADCOM_COM_IfName", {value: now}, {value: "ppp0.1"});
+    declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.*.NATEnabled", {value: now}, {value: true});
+    declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.*.X_BROADCOM_COM_FirewallEnabled", {value: now}, {value: true});
+    declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.*.Enable", {value: now}, {value: true});
+    declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.*.PPPoEServiceName", {value: now}, {value: "broadband"});

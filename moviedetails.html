@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Movie Details</title>
+    <style>
+        body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#movie-poster {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#movie-poster img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+#movie-details {
+  margin: 20px;
+}
+
+#movie-details h2 {
+  margin-top: 0;
+}
+
+#movie-details p {
+  line-height: 1.5;
+}
+      #play-button {
+        display: block;
+        width: 500px;
+        height: 50px;
+        background-color: #2aa203;
+        color: #fff;
+        border: none;
+        /* border-radius: 50%; */
+        font-size: 30px;
+        text-align: center;
+        line-height: 50px;
+        text-decoration: none;
+        margin-top: 10px;
+      }
+      #play-button:hover {
+        background-color: #ff0f1f;
+      }
+
+    </style>
+  </head>
+  <body>
+    <h1>Movie Details</h1>
+    <div id="movie-poster"></div>
+    <div id="movie-details"></div>
+    <script>
+      const API_KEY = "a074435ad948b2e6542c2bfc4cdab1d3"; // Replace with your own API key
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const movieId = urlParams.get('id');
+      if (!movieId) {
+        document.getElementById("movie-details").textContent = "No movie ID specified.";
+      } else {
+        const posterUrl = `https://image.tmdb.org/t/p/w185/${urlParams.get('poster')}`;
+
+        
+        const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}`;
+        fetch(apiUrl)
+          .then(response => response.json())
+          .then(data => {
+            const movieDetails = document.createElement("div");
+            const movieTitle = document.createElement("h2");
+            movieTitle.textContent = data.title;
+            movieDetails.appendChild(movieTitle);
+            const movieOverview = document.createElement("p");
+            movieOverview.textContent = data.overview;
+            const imdbid= data.imdb_id;
+            movieDetails.appendChild(movieOverview);
+            document.getElementById("movie-details").appendChild(movieDetails);
+
+
+            const moviePoster = document.createElement("img");
+            moviePoster.src = posterUrl;
+            const posterLink = document.createElement("a");
+            posterLink.href = `https://v2.vidsrc.me/embed/${imdbid}`;
+            posterLink.target = "_blank";
+            posterLink.rel = "noopener noreferrer";
+            posterLink.appendChild(moviePoster);
+            document.getElementById("movie-poster").appendChild(posterLink);
+            const PlayButton = document.createElement("a");
+            PlayButton.id="play-button";
+            PlayButton.href=`https://v2.vidsrc.me/embed/${imdbid}`;
+            PlayButton.text="PLAY ▶▶▶"     
+            document.getElementById("movie-poster").appendChild(PlayButton);
+
+          })
+          .catch(error => console.error(error));
+      }
+    </script>
+  </body>
+</html>

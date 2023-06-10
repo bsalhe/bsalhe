@@ -1,0 +1,4 @@
+// Example: Setting the SSID as the last 6 characters of the serial number
+let serial = declare("Device.DeviceInfo.SerialNumber", {value: 1});
+declare("Device.LANDevice.1.WLANConfiguration.1.SSID", null,
+  {value: serial.value[0]});
